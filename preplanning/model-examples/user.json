@@ -1,0 +1,6 @@
+{
+    username: "Kfir Eichenblat",
+    email: "kfirprods@gmail.com",
+    password: "hashed_password_here",
+    projectIds: [1, 2, 3],
+}

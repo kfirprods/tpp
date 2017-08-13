@@ -1,0 +1,22 @@
+{
+    title: "Useless Desktop App",
+    rules: [
+        {
+            ruleId: 1,
+            parameters: {
+                key: "remove_docstrings",
+                value: false,
+            },
+        },
+    ],
+    userPermissions: [
+        {
+            username: "Kfir Eichenblat",
+            permission: "Project Owner",
+        },
+        {
+            username: "John Doe",
+            permission: "Execute Only",
+        },
+    ],
+}
