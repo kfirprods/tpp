@@ -26,7 +26,10 @@
   "homepage": "https://github.com/kfirprods/tpp#readme",
   "dependencies": {
     "express": "^4.15.4",
+    "express-session": "^1.15.5",
     "mongoose": "^4.11.7",
-    "bcryptjs": "^2.4.3"
+    "bcryptjs": "^2.4.3",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
   }
 }

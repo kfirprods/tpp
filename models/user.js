@@ -11,8 +11,11 @@ var userSchema = mongoose.Schema({
 
 var User = module.exports = mongoose.model('User', userSchema);
 module.exports.getUserByCredentials = function(username, rawPassword, callback) {
+    console.log("getUserByCredentials();");
     User.findOne({ username: username }, function(err, user) {
+        console.log("User.findOne");
         if (user == null) {
+            console.log("Username not found: ", username);
             callback(null, null);
             return;
         }
@@ -22,9 +25,13 @@ module.exports.getUserByCredentials = function(username, rawPassword, callback) 
             callback(null, user);
             return;
         }
+        else {
+            console.log("Password did not match:", rawPassword);
+        }
 
         callback(null, null);
     });
+
 };
 
 module.exports.createUser = function(username, email, rawPassword, callback) {
