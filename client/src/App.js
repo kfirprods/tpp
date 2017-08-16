@@ -26,11 +26,18 @@ class App extends Component {
 
       axios.post('/login', {
           username: "Kfir Eichenblat",
-          password: "123456"
+          password: "1"
       }).then(function (response) {
-          console.log(response);
+          console.log("success", response);
       }).catch(function (error) {
-          console.log(error);
+          if (error.response.status === 401) {
+              // handle bad login
+              console.log(error.response.data.message);
+          }
+          else if (error.response.status === 400) {
+              // handle server error
+              console.log("Server error during login", error, error.response);
+          }
       });
   }
 }

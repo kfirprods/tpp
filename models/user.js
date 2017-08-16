@@ -11,30 +11,36 @@ var userSchema = mongoose.Schema({
 
 var User = module.exports = mongoose.model('User', userSchema);
 module.exports.getUserByCredentials = function(username, rawPassword, callback) {
-    console.log("getUserByCredentials();");
     User.findOne({ username: username }, function(err, user) {
-        console.log("User.findOne");
         if (user == null) {
-            console.log("Username not found: ", username);
             callback(null, null);
             return;
         }
 
         var isMatch = bcrypt.compareSync(rawPassword, user.password);
         if (isMatch) {
+            console.log(username, "logged in!");
             callback(null, user);
             return;
         }
         else {
-            console.log("Password did not match:", rawPassword);
+            console.log("A failed login attempt to user", username);
         }
 
         callback(null, null);
     });
-
 };
 
 module.exports.createUser = function(username, email, rawPassword, callback) {
+    if (User.any({ username: username })) {
+        callback({ message: "The selected username is already in use" }, null);
+        return;
+    }
+    if (User.any({ email: email })) {
+        callback({ message: "The selected email is already in use" }, null);
+        return;
+    }
+
     var hashedPassword = bcrypt.hashSync(rawPassword, 8);
     User.create({ username: username, email: email, password: hashedPassword, projectIds: [] }, callback);
 };

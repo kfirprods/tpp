@@ -1,7 +1,9 @@
 var express = require('express');
+var expressValidation = require('express-validation');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require("./models").User;
+var validators = require("./validators");
 
 var router = express.Router();
 
@@ -10,7 +12,6 @@ var router = express.Router();
 // ==========
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log("Getting user by creds...");
         User.getUserByCredentials(username, password, function(err, user) {
             if (!user) {
                 return done(null, false, {message: 'Incorrect username or password.'});
@@ -30,13 +31,42 @@ passport.deserializeUser(function(user, done) {
     done(null, user);
 });
 
-router.post('/login',
-    passport.authenticate('local',
-        {
-            // TODO: Replace redirect with returning JSON data
-            successRedirect: '/',
-            failureRedirect: '/loginFailed'
-        })
-);
+// ==========
+// Authentication API
+// ==========
+router.post('/login', expressValidation(validators.login), function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            res.sendStatus(400);
+            return;
+        }
+
+        if (!user) {
+            res.status(401).json(info);
+        }
+        else {
+            res.sendStatus(200);
+        }
+    })(req, res, next);
+});
+
+router.post('/register', expressValidation(validators.register), function(req, res, next) {
+    User.createUser(req.body.username, req.body.email, req.body.password, function(err, user) {
+        if (err) {
+            res.status(401).json(err);
+            return;
+        }
+
+        req.login(user, function(err) {
+            if (err) {
+                console.log("Error during register", err);
+                res.status(500);
+                return;
+            }
+
+            res.sendStatus(200);
+        });
+    });
+});
 
 module.exports = router;
