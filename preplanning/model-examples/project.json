@@ -1,14 +1,6 @@
 {
     title: "Useless Desktop App",
-    rules: [
-        {
-            ruleId: 1,
-            parameters: {
-                key: "remove_docstrings",
-                value: false,
-            },
-        },
-    ],
+    rules: [1, 2, 3],
     userPermissions: [
         {
             username: "Kfir Eichenblat",
