@@ -16,3 +16,7 @@ var Project = module.exports = mongoose.model('Project', projectSchema);
 module.exports.createProject = function(title, rules, permissions, callback) {
     Project.create({title: title, rules: rules, userPermissions: permissions }, callback);
 };
+
+module.exports.getProjectsByUsername = function(username, callback) {
+    Project.find({userPermissions: {$elemMatch: {username: username}}}, callback);
+};

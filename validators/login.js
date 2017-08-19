@@ -2,7 +2,7 @@ var Joi = require('joi');
 
 module.exports = {
     body: {
-        username: Joi.string().required(),
-        password: Joi.string().regex(/.{3,32}/).required()
+        username: Joi.string().alphanum().min(3).max(32).required(),
+        password: Joi.string().min(3).max(32).required()
     }
 };

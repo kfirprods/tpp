@@ -1,6 +1,8 @@
 var User = require("./user.js");
-require("./project.js");
-require("./rule.js");
+var Project = require("./project.js");
+var Rule = require("./rule.js");
 
 
 module.exports.User = User;
+module.exports.Project = Project;
+module.exports.Rule = Rule;

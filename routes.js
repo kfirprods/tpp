@@ -2,8 +2,11 @@ var express = require('express');
 var expressValidation = require('express-validation');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+
 var User = require("./models").User;
+var Project = require("./models").Project;
 var validators = require("./validators");
+var constants = require("./consts");
 
 var router = express.Router();
 
@@ -34,6 +37,15 @@ passport.deserializeUser(function(user, done) {
 // ==========
 // Authentication API
 // ==========
+function isAuthenticatedMiddleware(req,res,next){
+    if(req.user)
+        return next();
+    else
+        return res.status(401).json({
+            error: 'User not authenticated'
+        });
+}
+
 router.post('/login', expressValidation(validators.login), function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -45,7 +57,9 @@ router.post('/login', expressValidation(validators.login), function(req, res, ne
             res.status(401).json(info);
         }
         else {
-            res.sendStatus(200);
+            req.logIn(user, function (err) {
+                res.sendStatus(200);
+            });
         }
     })(req, res, next);
 });
@@ -53,7 +67,7 @@ router.post('/login', expressValidation(validators.login), function(req, res, ne
 router.post('/register', expressValidation(validators.register), function(req, res, next) {
     User.createUser(req.body.username, req.body.email, req.body.password, function(err, user) {
         if (err) {
-            res.status(401).json(err);
+            res.status(403).json(err);
             return;
         }
 
@@ -67,6 +81,34 @@ router.post('/register', expressValidation(validators.register), function(req, r
             res.sendStatus(200);
         });
     });
+});
+
+router.get("/projects", isAuthenticatedMiddleware, function(req, res, next) {
+    Project.getProjectsByUsername(req.user.username, function (err, projects) {
+        if (err) {
+            console.log("getProjectsByUsername error:", err);
+            res.sendStatus(500);
+        }
+        else {
+            res.json(projects);
+        }
+    });
+});
+
+router.post("/projects", [isAuthenticatedMiddleware, expressValidation(validators.project)],
+    function(req, res, next) {
+        var permissionsIncludingUser = [...req.body.userPermissions,
+            {username: req.user.username, permission: constants.PROJECT_USER_PERMISSIONS.FULL}];
+
+        Project.createProject(req.body.title, req.body.rules, permissionsIncludingUser, function(err, project) {
+           if (err) {
+               console.log("createProject error:", err);
+               res.sendStatus(500);
+           }
+           else {
+               res.sendStatus(200);
+           }
+        });
 });
 
 module.exports = router;

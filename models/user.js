@@ -3,8 +3,28 @@ var bcrypt = require('bcryptjs');
 
 
 var userSchema = mongoose.Schema({
-    username: String,
-    email: String,
+    username: {
+        type: String,
+        validate: {
+            validator: function(val, next) {
+                User.find({username: val}, function (err, matches) {
+                    next(matches.length == 0);
+                });
+            },
+            message: "The selected username is already in use"
+        }
+    },
+    email: {
+        type: String,
+        validate: {
+            validator: function(val, next) {
+                User.find({email: val}, function (err, matches) {
+                    next(matches.length == 0);
+                });
+            },
+            message: "The selected email is already in use"
+        }
+    },
     password: String,
     projectIds: [mongoose.Schema.Types.ObjectId]
 });
@@ -32,15 +52,6 @@ module.exports.getUserByCredentials = function(username, rawPassword, callback) 
 };
 
 module.exports.createUser = function(username, email, rawPassword, callback) {
-    if (User.any({ username: username })) {
-        callback({ message: "The selected username is already in use" }, null);
-        return;
-    }
-    if (User.any({ email: email })) {
-        callback({ message: "The selected email is already in use" }, null);
-        return;
-    }
-
     var hashedPassword = bcrypt.hashSync(rawPassword, 8);
     User.create({ username: username, email: email, password: hashedPassword, projectIds: [] }, callback);
 };

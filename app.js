@@ -16,8 +16,8 @@ var cors = require('cors');
 var app = express();
 
 app.use(cors());
-app.use(session({ secret: 'tea-pee-pee', resave: true, saveUninitialized: true }));
 app.use(bodyParser.json());
+app.use(session({ secret: 'tea-pee-pee' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(require('./routes'));

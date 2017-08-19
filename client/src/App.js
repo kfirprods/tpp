@@ -25,8 +25,8 @@ class App extends Component {
       event.preventDefault();
 
       axios.post('/login', {
-          username: "Kfir Eichenblat",
-          password: "1"
+          username: "kfirprods",
+          password: "1234"
       }).then(function (response) {
           console.log("success", response);
       }).catch(function (error) {
