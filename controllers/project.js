@@ -52,14 +52,12 @@ module.exports.updateProject = function(req, res, next) {
         var userPermissions = project.userPermissions.filter(item => item.username == req.user.username);
 
         if (!userPermissions.length) {
-            console.log("no perms found");
             res.sendStatus(401);
         }
         else {
             // One needs full permissions to edit other users permissions
             if (userPermissions[0].permission != constants.PROJECT_USER_PERMISSIONS.FULL &&
                 req.body.userPermissions.length) {
-                console.log("insufficient perm:", userPermissions[0].permission);
                 res.sendStatus(401);
             }
             else {
@@ -68,7 +66,7 @@ module.exports.updateProject = function(req, res, next) {
                     req.body.title,
                     req.body.rules,
                     req.body.userPermissions,
-                    function (err, project) {
+                    function (err) {
                         if (err) {
                             console.log("updateProject error:", err);
                             res.sendStatus(500);
@@ -79,6 +77,37 @@ module.exports.updateProject = function(req, res, next) {
                     }
                 );
             }
+        }
+    });
+};
+
+module.exports.deleteProject = function (req, res, next) {
+    Project.getProjectById(req.params.projectId, function(err, project) {
+        if (!project) {
+            res.sendStatus(400);
+            return;
+        }
+
+        // One would need full permissions to delete the project
+        var userPermissions = project.userPermissions.filter(
+            item => item.username == req.user.username && item.permission == constants.PROJECT_USER_PERMISSIONS.FULL);
+
+        if (!userPermissions.length) {
+            res.sendStatus(401);
+        }
+        else {
+            Project.deleteProject(
+                req.params.projectId,
+                function (err) {
+                    if (err) {
+                        console.log("deleteProject error:", err);
+                        res.sendStatus(500);
+                    }
+                    else {
+                        res.sendStatus(200);
+                    }
+                }
+            );
         }
     });
 };

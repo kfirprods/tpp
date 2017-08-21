@@ -46,28 +46,27 @@ function isAuthenticatedMiddleware(req,res,next){
         });
 }
 
-router.post('/login', expressValidation(validators.login), authController.login);
 
+router.post('/login', expressValidation(validators.login), authController.login);
 router.post('/register', expressValidation(validators.register), authController.register);
 
 // Get all projects related to the logged in user
 router.get("/projects", isAuthenticatedMiddleware, projectController.getUserProjects);
-
 // Get a specific project by id
 router.get("/projects/:projectId", isAuthenticatedMiddleware, projectController.getProjectById);
-
 // Create new project
 router.post(
     "/projects",
     [isAuthenticatedMiddleware, expressValidation(validators.project)],
     projectController.createProject
 );
-
 // Update existing project
 router.post(
     "/projects/:projectId",
     [isAuthenticatedMiddleware, expressValidation(validators.project)],
     projectController.updateProject);
+// Delete existing project
+router.delete("/projects/:projectId", isAuthenticatedMiddleware, projectController.deleteProject);
 
 
 module.exports = router;

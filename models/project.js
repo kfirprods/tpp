@@ -49,9 +49,13 @@ module.exports.updateProject = function(projectId, title, rules, permissions, ca
 };
 
 module.exports.getProjectsByUsername = function(username, callback) {
-    Project.find({userPermissions: {$elemMatch: {username: username}}}, callback);
+    Project.find({ userPermissions: { $elemMatch: { username: username }}}, callback);
 };
 
 module.exports.getProjectById = function(projectId, callback) {
     Project.findOne({ _id: projectId }, callback);
+};
+
+module.exports.deleteProject = function(projectId, callback) {
+    Project.remove({ _id: projectId }, callback);
 };
