@@ -2,12 +2,5 @@
     title: "Python comments remover",
     ruleType: "automated",
     creatorUsername: "Kfir Eichenblat",
-    ruleParameters: [
-        {
-            parameterName: "remove_docstrings",
-            parameterDescription: "Should function, class and module docstrings be removed too?"
-            defaultValue: true,
-            parameterType: Boolean,
-        },
-    ],
+    regularExpressions: ["^# .*"]
 }

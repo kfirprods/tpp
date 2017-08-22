@@ -7,6 +7,7 @@ var validators = require("./validators");
 var User = require("./models").User;
 var authController = require("./controllers/auth");
 var projectController = require("./controllers/project");
+var ruleController = require("./controllers/rule");
 
 var router = express.Router();
 
@@ -67,6 +68,15 @@ router.post(
     projectController.updateProject);
 // Delete existing project
 router.delete("/projects/:projectId", isAuthenticatedMiddleware, projectController.deleteProject);
+
+// Get all rules (not just user-related ones)
+router.get("/rules", ruleController.getAllRules);
+// Get rule by id
+router.get("/rules/:ruleId", ruleController.getRuleById);
+// Create rule
+router.post("/rules", [isAuthenticatedMiddleware, expressValidation(validators.rule)], ruleController.createRule);
+// Delete existing rule
+router.delete("/rules/:ruleId", ruleController.deleteRule);
 
 
 module.exports = router;
