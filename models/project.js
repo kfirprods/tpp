@@ -5,18 +5,27 @@ var userProjectPermissionSchema = mongoose.Schema({
     permission: String
 });
 
+var repositorySchema = mongoose.Schema({
+    address: String,
+    username: String,
+    password: String,
+    sourceBranch: String,
+    targetBranch: String
+});
+
 var projectSchema = mongoose.Schema({
     title: String,
-    rules: [mongoose.Schema.Types.ObjectId],
-    userPermissions: [userProjectPermissionSchema]
+    rules: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rule' }],
+    userPermissions: [userProjectPermissionSchema],
+    repository: repositorySchema,
 });
 
 var Project = module.exports = mongoose.model('Project', projectSchema);
-module.exports.createProject = function(title, rules, permissions, callback) {
-    Project.create({title: title, rules: rules, userPermissions: permissions }, callback);
+module.exports.createProject = function(title, rules, permissions, repository, callback) {
+    Project.create({title: title, rules: rules, userPermissions: permissions, repository: repository }, callback);
 };
 
-module.exports.updateProject = function(projectId, title, rules, permissions, callback) {
+module.exports.updateProject = function(projectId, title, rules, permissions, repository, callback) {
     Project.findOne({_id: projectId}, function(err, project) {
         if (err) {
             callback(err, null);
@@ -42,6 +51,9 @@ module.exports.updateProject = function(projectId, title, rules, permissions, ca
         if (rules)
             project.rules = rules;
 
+        if (repository)
+            project.repository = repository;
+
         project.save();
 
         callback(null, project);
@@ -53,7 +65,7 @@ module.exports.getProjectsByUsername = function(username, callback) {
 };
 
 module.exports.getProjectById = function(projectId, callback) {
-    Project.findOne({ _id: projectId }, callback);
+    Project.findOne({ _id: projectId }).populate("rules").exec(callback);
 };
 
 module.exports.deleteProject = function(projectId, callback) {

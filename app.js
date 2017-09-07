@@ -4,6 +4,7 @@
 var express = require('express');
 var session = require('express-session');
 var expressValidation = require('express-validation');
+var expressFileUpload = require('express-fileupload');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(session({ secret: 'tea-pee-pee' }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(expressFileUpload());
 app.use(require('./routes'));
 
 // Error handler

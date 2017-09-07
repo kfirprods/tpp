@@ -12,6 +12,13 @@ module.exports = {
         userPermissions: Joi.array().items(Joi.object({
             username: loginValidator.body.username,
             permission: Joi.string().valid(Object.values(constants.PROJECT_USER_PERMISSIONS)).required()
-        }))
+        })),
+        repository: Joi.object({
+            address: Joi.string().required(),
+            username: Joi.string().default("guest"),
+            password: Joi.string().default("guest"),
+            sourceBranch: Joi.string().default("default"),
+            targetBranch: Joi.string().default("tpp")
+        }).required()
     }
 };

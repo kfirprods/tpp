@@ -68,6 +68,16 @@ router.post(
     projectController.updateProject);
 // Delete existing project
 router.delete("/projects/:projectId", isAuthenticatedMiddleware, projectController.deleteProject);
+// Clone project and get file names
+router.post(
+    "/projects/:projectId/preprocess",
+    isAuthenticatedMiddleware,
+    projectController.preprocessProject);
+// Process a single project file
+router.post(
+    "/projects/:projectId/processfile",
+    isAuthenticatedMiddleware,
+    projectController.processFile);
 
 // Get all rules (not just user-related ones)
 router.get("/rules", ruleController.getAllRules);
@@ -77,6 +87,7 @@ router.get("/rules/:ruleId", ruleController.getRuleById);
 router.post("/rules", [isAuthenticatedMiddleware, expressValidation(validators.rule)], ruleController.createRule);
 // Delete existing rule
 router.delete("/rules/:ruleId", ruleController.deleteRule);
+
 
 
 module.exports = router;

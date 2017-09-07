@@ -29,13 +29,17 @@
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "express": "^4.15.4",
+    "express-fileupload": "^0.1.4",
     "express-session": "^1.15.5",
     "express-validation": "^1.0.2",
+    "hg-plus": "^1.0.2",
     "joi": "^10.6.0",
     "joi-objectid": "^2.0.0",
     "mongoose": "^4.11.7",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "passport-remember-me": "0.0.1"
+    "passport-remember-me": "0.0.1",
+    "recursive-readdir": "^2.2.1",
+    "tmp": "0.0.33"
   }
 }
