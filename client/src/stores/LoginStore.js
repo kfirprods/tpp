@@ -1,38 +1,30 @@
-import LOGIN_USER from '../constants/LoginConstants';
-import LOGOUT_USER from '../constants/LoginConstants';
-import BaseStore from './BaseStore';
-import AppDispatcher from "../dispatchers/AppDispatcher";
+import AppDispatcher from '../dispatchers/AppDispatcher';
+import BaseStore from "./BaseStore";
+import LoginActionTypes from '../constants/LoginConstants';
 
 
 class LoginStore extends BaseStore {
 
     constructor() {
         super();
-        this._dispatchToken = AppDispatcher.register(this._registerToActions.bind(this));
-        this._user = null;
+        AppDispatcher.register(this._registerToActions.bind(this));
+        this.isLoggedIn = false;
+        this.errorMessage = "";
     }
 
     _registerToActions(action) {
-        switch(action.actionType) {
-            case LOGIN_USER:
-                this._user = action.username;
+        switch(action.type) {
+            case LoginActionTypes.LOGIN_USER:
+                this.isLoggedIn = true;
                 this.emitChange();
                 break;
-            case LOGOUT_USER:
-                this._user = null;
+            case LoginActionTypes.LOGIN_FAILED:
+                this.errorMessage = action.reason;
                 this.emitChange();
                 break;
             default:
                 break;
         }
-    }
-
-    get user() {
-        return this._user;
-    }
-
-    isLoggedIn() {
-        return !!this._user;
     }
 }
 

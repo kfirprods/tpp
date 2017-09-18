@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom'
+
+import AppView from './components/AppView';
 
 
-ReactDOM.render(<BrowserRouter>
-                   <div>Hey</div>
-                </BrowserRouter>,
-    document.getElementById('root'));
+ReactDOM.render(<AppView />, document.getElementById('root'));
