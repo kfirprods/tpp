@@ -31,6 +31,6 @@ export const passwordValidators = [
 export const emailValidators = [
     {
         message: "Invalid email",
-        validator: value => validate.isEmail(value)
+        validator: value => validate.isEmail(value) || value.length == 0
     },
 ];

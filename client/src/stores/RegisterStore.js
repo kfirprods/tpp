@@ -3,23 +3,28 @@ import BaseStore from "./BaseStore";
 import AuthenticationActionTypes from '../constants/AuthenticationConstants';
 
 
-class LoginStore extends BaseStore {
+class RegisterStore extends BaseStore {
 
     constructor() {
         super();
         AppDispatcher.register(this._registerToActions.bind(this));
-        this.isLoggedIn = false;
+        this.registrationSucceeded = false;
         this.errorMessage = "";
+        this.fieldErrors = [];
     }
 
     _registerToActions(action) {
         switch(action.type) {
-            case AuthenticationActionTypes.LOGIN_USER:
-                this.isLoggedIn = true;
+            case AuthenticationActionTypes.REGISTRATION_SUCCEEDED:
+                this.registrationSucceeded = true;
                 this.emitChange();
                 break;
-            case AuthenticationActionTypes.LOGIN_FAILED:
+            case AuthenticationActionTypes.REGISTRATION_FAILED:
                 this.errorMessage = action.reason;
+                this.emitChange();
+                break;
+            case AuthenticationActionTypes.REGISTRATION_FORBIDDEN:
+                this.fieldErrors = action.fieldErrors;
                 this.emitChange();
                 break;
             default:
@@ -28,4 +33,4 @@ class LoginStore extends BaseStore {
     }
 }
 
-export default new LoginStore();
+export default new RegisterStore();

@@ -56,17 +56,14 @@ export default class Login extends React.Component {
             username: this.state.username,
             password: this.state.password
         }).then(function (response) {
-            console.log("success", response);
             AuthenticationActions.loginUser();
         }).catch(function (error) {
             if (error.response.status === 401) {
                 // handle bad login
-                console.log(error.response.data.message);
                 AuthenticationActions.loginFailed(error.response.data.message);
             }
             else if (error.response.status === 500) {
                 // handle server error
-                console.log("Server error during login", error, error.response);
                 AuthenticationActions.loginFailed(error.response);
             }
         });

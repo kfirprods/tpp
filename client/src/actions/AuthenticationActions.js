@@ -1,18 +1,38 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import LoginActionTypes from '../constants/LoginConstants';
+import AuthenticationActionTypes from '../constants/AuthenticationConstants';
 
 
 export default {
     loginUser: () => {
         AppDispatcher.dispatch({
-            type: LoginActionTypes.LOGIN_USER
+            type: AuthenticationActionTypes.LOGIN_USER
         });
     },
 
     loginFailed: (message) => {
         AppDispatcher.dispatch({
-            type: LoginActionTypes.LOGIN_FAILED,
+            type: AuthenticationActionTypes.LOGIN_FAILED,
             reason: message
         });
-    }
+    },
+
+    registerUser: () => {
+        AppDispatcher.dispatch({
+            type: AuthenticationActionTypes.REGISTRATION_SUCCEEDED
+        });
+    },
+
+    registrationFailed: (message) => {
+        AppDispatcher.dispatch({
+            type: AuthenticationActionTypes.REGISTRATION_FAILED,
+            reason: message
+        });
+    },
+
+    registrationForbidden: (errors) => {
+        AppDispatcher.dispatch({
+            type: AuthenticationActionTypes.REGISTRATION_FORBIDDEN,
+            fieldErrors: errors
+        });
+    },
 }
