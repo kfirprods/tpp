@@ -1,5 +1,28 @@
 body {
-  margin: 1px;
-  padding: 1px;
-  font-family: sans-serif;
+    margin: 1px;
+    padding: 1px;
+    font-family: sans-serif;
+}
+
+.main-center{
+    margin: 0 auto;
+    max-width: 400px;
+    padding: 40px;
+}
+
+.icon-label {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-left-width: 0;
+    padding: 6px 12px;
+    font-weight: 600;
+    width: 100%;
+}
+
+.input-group-addon {
+    border-radius: 0;
+}
+
+.title {
+    margin: 10px 0;
 }

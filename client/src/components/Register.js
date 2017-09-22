@@ -105,43 +105,60 @@ export default class Register extends React.Component {
         }
 
         return (
-            <Jumbotron className="login">
-                <h1>Register</h1>
-                <form role="form">
-                    <div className="form-group">
-                        <ReactTextField type="email"
-                                        style={textFieldStyle}
-                                        onChange={this.handleEmailChanged}
-                                        className="form-control"
-                                        placeholder="Email"
-                                        validators={emailValidators} />
-                    </div>
-                    <div className="form-group">
-                        <ReactTextField type="text"
-                                        style={textFieldStyle}
-                                        onChange={this.handleUsernameChanged}
-                                        className="form-control"
-                                        placeholder="Username"
-                                        validators={usernameValidators} />
-                    </div>
-                    <div className="form-group">
-                        <ReactTextField type="password"
-                                        style={textFieldStyle}
-                                        onChange={this.handlePasswordChanged}
-                                        className="form-control"
-                                        placeholder="Password"
-                                        validators={passwordValidators} />
-                    </div>
-                    <div className="form-group">
-                        <ul className="errorsList">
-                            {this.state.fieldErrors.map(function(errorMessage, index) {
-                                return <li key={index}>{errorMessage}</li>
-                            })}
-                        </ul>
-                    </div>
-                    <Button type="submit" onClick={this.register}>Register</Button>
-                </form>
-            </Jumbotron>
+            <div className="container">
+                <div className="main-center">
+                    <h1 className="title text-center">Register</h1>
+                    <form role="form">
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-envelope fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Email</div>
+                            </div>
+
+                            <ReactTextField type="email"
+                                            style={textFieldStyle}
+                                            onChange={this.handleEmailChanged}
+                                            className="form-control"
+                                            placeholder="Email"
+                                            validators={emailValidators} />
+                        </div>
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Username</div>
+                            </div>
+
+                            <ReactTextField type="text"
+                                            style={textFieldStyle}
+                                            onChange={this.handleUsernameChanged}
+                                            className="form-control"
+                                            placeholder="Username"
+                                            validators={usernameValidators} />
+                        </div>
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-lock fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Password</div>
+                            </div>
+
+                            <ReactTextField type="password"
+                                            style={textFieldStyle}
+                                            onChange={this.handlePasswordChanged}
+                                            className="form-control"
+                                            placeholder="Password"
+                                            validators={passwordValidators} />
+                        </div>
+                        <div className="form-group">
+                            <ul className="errorsList">
+                                {this.state.fieldErrors.map(function(errorMessage, index) {
+                                    return <li key={index}>{errorMessage}</li>
+                                })}
+                            </ul>
+                        </div>
+                        <Button type="submit" onClick={this.register}>Register</Button>
+                    </form>
+                </div>
+            </div>
         );
     }
 }
