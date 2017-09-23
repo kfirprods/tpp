@@ -100,14 +100,13 @@ export default class Register extends React.Component {
 
     render() {
         if (this.state.registrationSucceeded) {
-            console.log("redirectin to /projects");
-            // return (<Redirect to="/projects" />);
+            return (<Redirect to="/projects" />);
         }
 
         return (
             <div className="container">
-                <div className="main-center">
-                    <h1 className="title text-center">Register</h1>
+                <div className="main-center auth-container">
+                    <h1 className="title text-center">Sign Up</h1>
                     <form role="form">
                         <div className="form-group">
                             <div className="input-group">
@@ -155,7 +154,7 @@ export default class Register extends React.Component {
                                 })}
                             </ul>
                         </div>
-                        <Button type="submit" onClick={this.register}>Register</Button>
+                        <Button className="btn btn-primary btn-lg btn-block login-button" type="submit" onClick={this.register}>Register</Button>
                     </form>
                 </div>
             </div>

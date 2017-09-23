@@ -75,31 +75,43 @@ export default class Login extends React.Component {
         }
 
         return (
-            <Jumbotron className="login">
-                <h1>Login</h1>
-                <form role="form">
-                    <div className="form-group">
-                        <ReactTextField type="text"
-                                        style={textFieldStyle}
-                                        onChange={this.handleUsernameChanged}
-                                        className="form-control"
-                                        placeholder="Username"
-                                        validators={usernameValidators} />
-                    </div>
-                    <div className="form-group">
-                        <ReactTextField type="password"
-                                        style={textFieldStyle}
-                                        onChange={this.handlePasswordChanged}
-                                        className="form-control"
-                                        placeholder="Password"
-                                        validators={passwordValidators} />
-                    </div>
-                    <div className="form-group">
-                        <label className="error">{this.state.errorMessage}</label>
-                    </div>
-                    <Button type="submit" onClick={this.login.bind(this)}>Submit</Button>
-                </form>
-            </Jumbotron>
+            <div className="container">
+                <div className="main-center auth-container">
+                    <h1 className="title text-center">Sign In</h1>
+                    <form role="form">
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Username</div>
+                            </div>
+
+                            <ReactTextField type="text"
+                                            style={textFieldStyle}
+                                            onChange={this.handleUsernameChanged}
+                                            className="form-control"
+                                            placeholder="Username"
+                                            validators={usernameValidators} />
+                        </div>
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-lock fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Password</div>
+                            </div>
+
+                            <ReactTextField type="password"
+                                            style={textFieldStyle}
+                                            onChange={this.handlePasswordChanged}
+                                            className="form-control"
+                                            placeholder="Password"
+                                            validators={passwordValidators} />
+                        </div>
+                        <div className="form-group">
+                            <label className="error">{this.state.errorMessage}</label>
+                        </div>
+                        <Button className="btn btn-primary btn-lg btn-block login-button" type="submit" onClick={this.login.bind(this)}>Submit</Button>
+                    </form>
+                </div>
+            </div>
         );
     }
 }
