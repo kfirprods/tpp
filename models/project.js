@@ -18,11 +18,18 @@ var projectSchema = mongoose.Schema({
     rules: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rule' }],
     userPermissions: [userProjectPermissionSchema],
     repository: repositorySchema,
+    creationTime: Number
 });
 
 var Project = module.exports = mongoose.model('Project', projectSchema);
-module.exports.createProject = function(title, rules, permissions, repository, callback) {
-    Project.create({title: title, rules: rules, userPermissions: permissions, repository: repository }, callback);
+module.exports.createProject = function(title, rules, permissions, repository, creationTime, callback) {
+    Project.create({
+        title: title,
+        rules: rules,
+        userPermissions: permissions,
+        repository: repository,
+        creationTime: creationTime
+    }, callback);
 };
 
 module.exports.updateProject = function(projectId, title, rules, permissions, repository, callback) {
@@ -34,7 +41,7 @@ module.exports.updateProject = function(projectId, title, rules, permissions, re
 
         if (permissions && permissions.length > 0) {
             var newFullPermCount = permissions.filter(
-                perm => perm.permission == constants.PROJECT_USER_PERMISSIONS.FULL
+                perm => perm.permission === constants.PROJECT_USER_PERMISSIONS.FULL
             ).length;
             if (newFullPermCount == 0) {
                 callback({message: "There must be at least 1 full-permissioned user at all times"}, null);

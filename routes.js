@@ -8,6 +8,7 @@ var User = require("./models").User;
 var authController = require("./controllers/auth");
 var projectController = require("./controllers/project");
 var ruleController = require("./controllers/rule");
+var userController = require("./controllers/user");
 
 var router = express.Router();
 
@@ -47,6 +48,7 @@ function isAuthenticatedMiddleware(req,res,next){
         });
 }
 
+router.get('/users', userController.getAllUsernames);
 
 router.post('/login', expressValidation(validators.login), authController.login);
 router.post('/register', expressValidation(validators.register), authController.register);

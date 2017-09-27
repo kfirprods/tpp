@@ -1,15 +1,15 @@
 import React from 'react';
 import ReactMixin from 'react-mixin';
 import addons from 'react-addons';
-import { Jumbotron, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import { ReactTextField } from 'react-textfield';
 import { Redirect } from 'react-router';
 
-import { emailValidators, usernameValidators, passwordValidators } from '../validators/authentication';
-import { textFieldStyle } from '../styles/forms';
-import AuthenticationActions from '../actions/AuthenticationActions';
-import RegisterStore from '../stores/RegisterStore';
+import { emailValidators, usernameValidators, passwordValidators } from '../../validators/authentication';
+import { textFieldStyle } from '../../styles/forms';
+import AuthenticationActions from '../../actions/AuthenticationActions';
+import RegisterStore from '../../stores/RegisterStore';
 
 
 export default class Register extends React.Component {
@@ -107,7 +107,7 @@ export default class Register extends React.Component {
             <div className="container">
                 <div className="main-center auth-container">
                     <h1 className="title text-center">Sign Up</h1>
-                    <form role="form">
+                    <form>
                         <div className="form-group">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="fa fa-envelope fa" aria-hidden="true" /></span>

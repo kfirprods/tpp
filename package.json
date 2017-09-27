@@ -35,6 +35,7 @@
     "hg-plus": "^1.0.2",
     "joi": "^10.6.0",
     "joi-objectid": "^2.0.0",
+    "moment": "^2.18.1",
     "mongoose": "^4.11.7",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",

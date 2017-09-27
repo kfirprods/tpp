@@ -2,6 +2,7 @@ var { spawn } = require('child_process');
 var fs = require('fs');
 var Hg = require('hg-plus')();
 var recursiveDir = require('recursive-readdir');
+var moment = require('moment');
 
 var Project = require("../models").Project;
 var constants = require("../consts");
@@ -22,7 +23,7 @@ module.exports.getUserProjects = function(req, res, next) {
 module.exports.getProjectById = function(req, res, next) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         // If the user has no permission at all
-        if (!project.userPermissions.some(permission => permission.username == req.user.username)) {
+        if (!project.userPermissions.some(permission => permission.username === req.user.username)) {
             res.sendStatus(401);
         }
         else {
@@ -41,6 +42,7 @@ module.exports.createProject = function(req, res, next) {
         req.body.rules,
         permissionsIncludingUser,
         req.body.repository,
+        moment().valueOf(), // unix time
         function(err) {
             if (err) {
                 console.log("createProject error:", err);
@@ -61,7 +63,7 @@ module.exports.updateProject = function(req, res, next) {
             return;
         }
 
-        var userPermissions = project.userPermissions.filter(item => item.username == req.user.username);
+        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
@@ -103,7 +105,7 @@ module.exports.deleteProject = function (req, res, next) {
 
         // One would need full permissions to delete the project
         var userPermissions = project.userPermissions.filter(
-            item => item.username == req.user.username && item.permission == constants.PROJECT_USER_PERMISSIONS.FULL);
+            item => item.username === req.user.username && item.permission === constants.PROJECT_USER_PERMISSIONS.FULL);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
@@ -133,7 +135,7 @@ module.exports.preprocessProject = function(req, res, next) {
         }
 
         // Verify that the user has any permissions
-        var userPermissions = project.userPermissions.filter(item => item.username == req.user.username);
+        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
@@ -194,7 +196,7 @@ module.exports.processFile = function(req, res, next) {
         }
 
         // Verify that the user has any permissions
-        var userPermissions = project.userPermissions.filter(item => item.username == req.user.username);
+        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);

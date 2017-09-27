@@ -56,4 +56,18 @@ module.exports.createUser = function(username, email, rawPassword, callback) {
     User.create({ username: username, email: email, password: hashedPassword, projectIds: [] }, callback);
 };
 
-// TODO: Export more functions here
+module.exports.getAllUsernames = function(callback) {
+    User.find({}, function(err, users) {
+        if (err) {
+            callback(err, []);
+        }
+        else {
+            let usernames = [];
+            for (let user of users) {
+                usernames.push(user.username);
+            }
+
+            callback(null, usernames);
+        }
+    });
+};

@@ -103,3 +103,22 @@ section {
     color: white;
     padding-top: 150px;
 }
+
+.projects-table {
+    background: #FCFCFC;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.create-project-container {
+    width: 90%;
+    padding: 20px 40px;
+}
+
+.flexbox {
+    display: flex;
+}
+
+.flex-left-to-right {
+    flex-direction: row;
+}

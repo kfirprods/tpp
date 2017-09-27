@@ -10,12 +10,14 @@ class LoginStore extends BaseStore {
         AppDispatcher.register(this._registerToActions.bind(this));
         this.isLoggedIn = false;
         this.errorMessage = "";
+        this.username = "";
     }
 
     _registerToActions(action) {
         switch(action.type) {
             case AuthenticationActionTypes.LOGIN_USER:
                 this.isLoggedIn = true;
+                this.username = action.username;
                 this.emitChange();
                 break;
             case AuthenticationActionTypes.LOGIN_FAILED:

@@ -1,15 +1,14 @@
 import React from 'react';
 import ReactMixin from 'react-mixin';
 import addons from 'react-addons';
-import { Jumbotron, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { Button } from 'react-bootstrap';
 import { ReactTextField } from 'react-textfield';
 import { Redirect } from 'react-router';
 
-import { usernameValidators, passwordValidators } from '../validators/authentication';
-import { textFieldStyle } from '../styles/forms';
-import AuthenticationActions from '../actions/AuthenticationActions';
-import LoginStore from '../stores/LoginStore';
+import { usernameValidators, passwordValidators } from '../../validators/authentication';
+import { textFieldStyle } from '../../styles/forms';
+import AuthenticationActions from '../../actions/AuthenticationActions';
+import LoginStore from '../../stores/LoginStore';
 
 
 export default class Login extends React.Component {
@@ -48,25 +47,10 @@ export default class Login extends React.Component {
         this.setState({ password: e.target.value });
     }
 
-    // This will be called when the user clicks on the login button
     login(e) {
         e.preventDefault();
 
-        axios.post('/login', {
-            username: this.state.username,
-            password: this.state.password
-        }).then(function (response) {
-            AuthenticationActions.loginUser();
-        }).catch(function (error) {
-            if (error.response.status === 401) {
-                // handle bad login
-                AuthenticationActions.loginFailed(error.response.data.message);
-            }
-            else if (error.response.status === 500) {
-                // handle server error
-                AuthenticationActions.loginFailed(error.response);
-            }
-        });
+        AuthenticationActions.loginUser(this.state.username, this.state.password);
     }
 
     render() {
@@ -108,7 +92,9 @@ export default class Login extends React.Component {
                         <div className="form-group">
                             <label className="error">{this.state.errorMessage}</label>
                         </div>
-                        <Button className="btn btn-primary btn-lg btn-block login-button" type="submit" onClick={this.login.bind(this)}>Submit</Button>
+                        <Button className="btn btn-primary btn-lg btn-block login-button"
+                                type="submit"
+                                onClick={this.login.bind(this)}>Login</Button>
                     </form>
                 </div>
             </div>
