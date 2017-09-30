@@ -53,6 +53,29 @@ export default class CreateProject extends React.Component {
                         </div>
 
                         <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-unlock fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Project Administrators (Full Permissions)</div>
+                            </div>
+
+                            <ProjectPermissionSelector />
+                        </div>
+
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-unlock-alt fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Project Leads (Read, Execute and Edit)</div>
+                            </div>
+
+                            <ProjectPermissionSelector />
+                        </div>
+
+                        <div className="form-group">
+                            <div className="input-group">
+                                <span className="input-group-addon"><i className="fa fa-lock fa" aria-hidden="true" /></span>
+                                <div className="icon-label">Standard Users (Read and Execute)</div>
+                            </div>
+
                             <ProjectPermissionSelector />
                         </div>
 

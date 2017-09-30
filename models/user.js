@@ -56,8 +56,12 @@ module.exports.createUser = function(username, email, rawPassword, callback) {
     User.create({ username: username, email: email, password: hashedPassword, projectIds: [] }, callback);
 };
 
-module.exports.getAllUsernames = function(callback) {
-    User.find({}, function(err, users) {
+module.exports.getAllUsernames = function(query, callback) {
+    let findQuery = {};
+    if (query) {
+        findQuery = { username: { '$regex': query, '$options': 'i'} };
+    }
+    User.find(findQuery, function(err, users) {
         if (err) {
             callback(err, []);
         }

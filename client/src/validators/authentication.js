@@ -8,7 +8,7 @@ export const usernameValidators = [
     },
     {
         message: 'Username must be at least 3 characters long',
-        validator: value => value.length >= 3 || value.length == 0
+        validator: value => value.length >= 3 || value.length === 0
     },
     {
         message: 'Username must be 32 characters long at most',
@@ -20,7 +20,7 @@ export const usernameValidators = [
 export const passwordValidators = [
     {
         message: "Password must be at least 3 characters long",
-        validator: value => value.length >= 3 || value.length == 0
+        validator: value => value.length >= 3 || value.length === 0
     },
     {
         message: 'Password must be 32 characters long at most',
@@ -31,6 +31,6 @@ export const passwordValidators = [
 export const emailValidators = [
     {
         message: "Invalid email",
-        validator: value => validate.isEmail(value) || value.length == 0
+        validator: value => validate.isEmail(value) || value.length === 0
     },
 ];

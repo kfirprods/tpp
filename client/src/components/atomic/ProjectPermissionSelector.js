@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import ReactAutocomplete from 'react-autocomplete';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 
 export default class ProjectPermissionSelector extends React.Component {
@@ -8,43 +8,43 @@ export default class ProjectPermissionSelector extends React.Component {
         super();
 
         this.state = {
-            possibleUsernames: []
+            selectedUserNames: []
         };
 
-        this.onUsernameChanged = this.onUsernameChanged.bind(this);
+        this.onSelectedUserNamesChanged = this.onSelectedUserNamesChanged.bind(this);
     }
 
-    componentDidMount() {
-        axios.get('/users').then((response) => {
-            this.setState({possibleUsernames: response.data});
+    getUsers(input) {
+        if (!input) {
+            return Promise.resolve({ options: [] });
+        }
+
+        return fetch(`/users?q=${input}`).then((response) => response.json()).then((response) => {
+            let options = response.map((username) => {
+                return { username: username };
+            });
+
+            return { options: options };
         });
     }
 
-    onUsernameChanged(e) {
-        this.setState({selectedUsername: e.target.value});
+    onSelectedUserNamesChanged(value) {
+        this.setState({selectedUserNames: value});
+
+        if (this.props.onSelectedUserNamesChanged)
+            this.props.onSelectedUserNamesChanged(value);
     }
 
     render() {
         return (
-            <div className="flexbox flex-left-to-right">
-                <div>
-                    <ReactAutocomplete items={this.state.possibleUsernames}
-                                       value={this.state.selectedUsername}
-                                       shouldItemRender={(item, value) => item.toLowerCase().indexOf(value.toLowerCase()) > -1}
-                                       onChange={this.onUsernameChanged}
-                                       onSelect={(val) => {this.setState({ selectedUsername: val })}}
-                                       renderItem={
-                                           (item, isHighlighted) =>
-                                               <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
-                                                   {item}
-                                               </div>
-                                       }
-                                       getItemValue={(item) => item} />
-                </div>
-
-                <div>
-                    Permissions
-                </div>
+            <div>
+                <Select.Async multi={true}
+                              loadOptions={this.getUsers}
+                              backspaceRemoves={true}
+                              value={this.state.selectedUserNames}
+                              onChange={this.onSelectedUserNamesChanged}
+                              labelKey="username"
+                              valueKey="username" />
             </div>
         );
     }
