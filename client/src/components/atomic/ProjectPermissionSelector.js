@@ -4,16 +4,6 @@ import 'react-select/dist/react-select.css';
 
 
 export default class ProjectPermissionSelector extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            selectedUserNames: []
-        };
-
-        this.onSelectedUserNamesChanged = this.onSelectedUserNamesChanged.bind(this);
-    }
-
     getUsers(input) {
         if (!input) {
             return Promise.resolve({ options: [] });
@@ -28,21 +18,14 @@ export default class ProjectPermissionSelector extends React.Component {
         });
     }
 
-    onSelectedUserNamesChanged(value) {
-        this.setState({selectedUserNames: value});
-
-        if (this.props.onSelectedUserNamesChanged)
-            this.props.onSelectedUserNamesChanged(value);
-    }
-
     render() {
         return (
             <div>
                 <Select.Async multi={true}
                               loadOptions={this.getUsers}
                               backspaceRemoves={true}
-                              value={this.state.selectedUserNames}
-                              onChange={this.onSelectedUserNamesChanged}
+                              value={this.props.value}
+                              onChange={this.props.onChange}
                               labelKey="username"
                               valueKey="username" />
             </div>

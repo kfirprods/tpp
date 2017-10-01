@@ -123,8 +123,16 @@ section {
     flex-direction: row;
 }
 
-.flex-item {
+.flex-1 {
     flex: 1;
+}
+
+.flex-4 {
+    flex: 4;
+}
+
+.flex-9 {
+    flex: 9;
 }
 
 .ReactTextField--input {
@@ -163,4 +171,9 @@ input {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.centered {
+    text-align: center;
+    margin: 0 auto;
 }

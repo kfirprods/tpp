@@ -9,6 +9,7 @@ var authController = require("./controllers/auth");
 var projectController = require("./controllers/project");
 var ruleController = require("./controllers/rule");
 var userController = require("./controllers/user");
+var utilityController = require("./controllers/utility");
 
 var router = express.Router();
 
@@ -90,6 +91,6 @@ router.post("/rules", [isAuthenticatedMiddleware, expressValidation(validators.r
 // Delete existing rule
 router.delete("/rules/:ruleId", ruleController.deleteRule);
 
-
+router.get("/utility/repository-exists", utilityController.repositoryExists);
 
 module.exports = router;

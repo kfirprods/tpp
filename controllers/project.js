@@ -1,6 +1,6 @@
 var { spawn } = require('child_process');
 var fs = require('fs');
-var Hg = require('hg-plus')();
+// var Hg = require('hg-plus')();
 var recursiveDir = require('recursive-readdir');
 var moment = require('moment');
 

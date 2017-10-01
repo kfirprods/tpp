@@ -32,7 +32,7 @@
     "express-fileupload": "^0.1.4",
     "express-session": "^1.15.5",
     "express-validation": "^1.0.2",
-    "hg-plus": "^1.0.2",
+    "hg-plus": "https://github.com/kfirprods/node-hg-plus/tarball/master",
     "joi": "^10.6.0",
     "joi-objectid": "^2.0.0",
     "moment": "^2.18.1",

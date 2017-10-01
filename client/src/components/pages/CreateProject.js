@@ -7,6 +7,7 @@ import { projectNameValidators } from '../../validators/project';
 import { textFieldStyle } from '../../styles/forms';
 import ProjectActions from '../../actions/ProjectActions';
 import ProjectPermissionSelector from '../atomic/ProjectPermissionSelector';
+import RepositorySelector from '../atomic/RepositorySelector';
 
 
 export default class CreateProject extends React.Component {
@@ -14,15 +15,38 @@ export default class CreateProject extends React.Component {
         super();
         this.state = {
             projectId: -1,
-            projectName: ""
+            projectName: "",
+            selectedAdministrators: [],
+            selectedLeads: [],
+            selectedStandardUsers: [],
+            selectedRepository: ""
         };
 
         this.handleProjectNameChanged = this.handleProjectNameChanged.bind(this);
+        this.selectedAdministratorsChanged = this.selectedAdministratorsChanged.bind(this);
+        this.selectedLeadsChanged = this.selectedLeadsChanged.bind(this);
+        this.selectedStandardUsersChanged = this.selectedStandardUsersChanged.bind(this);
         this.createProject = this.createProject.bind(this);
     }
 
     handleProjectNameChanged(e) {
         this.setState({projectName: e.target.value});
+    }
+
+    selectedAdministratorsChanged(admins) {
+        this.setState({selectedAdministrators: admins});
+    }
+
+    selectedLeadsChanged(leads) {
+        this.setState({selectedLeads: leads});
+    }
+
+    selectedStandardUsersChanged(users) {
+        this.setState({selectedStandardUsers: users});
+    }
+
+    selectedRepositoryChanged(repository) {
+        this.setState({selectedRepository: repository});
     }
 
     createProject(e) {
@@ -58,7 +82,8 @@ export default class CreateProject extends React.Component {
                                 <div className="icon-label">Project Administrators (Full Permissions)</div>
                             </div>
 
-                            <ProjectPermissionSelector />
+                            <ProjectPermissionSelector value={this.state.selectedAdministrators}
+                                                       onChange={this.selectedAdministratorsChanged} />
                         </div>
 
                         <div className="form-group">
@@ -67,7 +92,8 @@ export default class CreateProject extends React.Component {
                                 <div className="icon-label">Project Leads (Read, Execute and Edit)</div>
                             </div>
 
-                            <ProjectPermissionSelector />
+                            <ProjectPermissionSelector value={this.state.selectedLeads}
+                                                       onChange={this.selectedLeadsChanged} />
                         </div>
 
                         <div className="form-group">
@@ -76,12 +102,13 @@ export default class CreateProject extends React.Component {
                                 <div className="icon-label">Standard Users (Read and Execute)</div>
                             </div>
 
-                            <ProjectPermissionSelector />
+                            <ProjectPermissionSelector value={this.state.selectedStandardUsers}
+                                                       onChange={this.selectedStandardUsersChanged} />
                         </div>
 
                         <div className="form-group">
-                            /* If possible, existence validation */
-
+                            <RepositorySelector value={this.state.selectedRepository}
+                                                onChange={this.selectedRepositoryChanged} />
                         </div>
 
                         <div className="form-group">
