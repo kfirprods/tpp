@@ -32,6 +32,7 @@ export default class RepositorySelector extends React.Component {
         }).then((response) => {
             if (response.data.success) {
                 this.setState({repositoryStatus: REPOSITORY_VALIDATION_STATUSES.VALID});
+                this.props.onChange(e.target.value);
             }
             else {
                 this.setState({repositoryStatus: REPOSITORY_VALIDATION_STATUSES.INVALID});
@@ -41,16 +42,16 @@ export default class RepositorySelector extends React.Component {
 
     render() {
         let image = "";
-        if (this.state.repositoryStatus == REPOSITORY_VALIDATION_STATUSES.LOADING) {
+        if (this.state.repositoryStatus === REPOSITORY_VALIDATION_STATUSES.LOADING) {
             image = '/img/Gear.svg';
         }
-        else if (this.state.repositoryStatus == REPOSITORY_VALIDATION_STATUSES.VALID) {
+        else if (this.state.repositoryStatus === REPOSITORY_VALIDATION_STATUSES.VALID) {
             image = '/img/tick.svg';
         }
-        else if (this.state.repositoryStatus == REPOSITORY_VALIDATION_STATUSES.INVALID) {
+        else if (this.state.repositoryStatus === REPOSITORY_VALIDATION_STATUSES.INVALID) {
             image = '/img/x.svg';
         }
-        const statusAnimation = <img src={image} style={{height: '2.5em'}} />;
+        const statusAnimation = <img alt="" src={image} style={{height: '2.5em'}} />;
 
         return (
             <div className="flexbox flex-left-to-right">

@@ -8,6 +8,7 @@ import { textFieldStyle } from '../../styles/forms';
 import ProjectActions from '../../actions/ProjectActions';
 import ProjectPermissionSelector from '../atomic/ProjectPermissionSelector';
 import RepositorySelector from '../atomic/RepositorySelector';
+import ProjectRuleSelector from '../atomic/ProjectRuleSelector';
 
 
 export default class CreateProject extends React.Component {
@@ -26,6 +27,8 @@ export default class CreateProject extends React.Component {
         this.selectedAdministratorsChanged = this.selectedAdministratorsChanged.bind(this);
         this.selectedLeadsChanged = this.selectedLeadsChanged.bind(this);
         this.selectedStandardUsersChanged = this.selectedStandardUsersChanged.bind(this);
+        this.selectedRulesChanged = this.selectedRulesChanged.bind(this);
+        this.selectedRepositoryChanged = this.selectedRepositoryChanged.bind(this);
         this.createProject = this.createProject.bind(this);
     }
 
@@ -47,6 +50,10 @@ export default class CreateProject extends React.Component {
 
     selectedRepositoryChanged(repository) {
         this.setState({selectedRepository: repository});
+    }
+
+    selectedRulesChanged(rules) {
+        this.setState({selectedRules: rules});
     }
 
     createProject(e) {
@@ -112,8 +119,7 @@ export default class CreateProject extends React.Component {
                         </div>
 
                         <div className="form-group">
-                            /* Auto-complete aggregated list box */
-
+                            <ProjectRuleSelector onChange={this.selectedRulesChanged} />
                         </div>
 
                         <Button className="btn btn-primary btn-lg btn-block login-button"
