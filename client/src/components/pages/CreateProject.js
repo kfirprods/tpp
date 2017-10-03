@@ -2,13 +2,26 @@ import React from 'react';
 import { ReactTextField } from 'react-textfield';
 import { Redirect } from 'react-router';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
 
 import { projectNameValidators } from '../../validators/project';
 import { textFieldStyle } from '../../styles/forms';
-import ProjectActions from '../../actions/ProjectActions';
 import ProjectPermissionSelector from '../atomic/ProjectPermissionSelector';
 import RepositorySelector from '../atomic/RepositorySelector';
 import ProjectRuleSelector from '../atomic/ProjectRuleSelector';
+
+
+const PROJECT_USER_PERMISSIONS = {
+    FULL: "Full Permissions",
+    READ_EXECUTE_EDIT: "Read, Execute, Edit",
+    READ_EXECUTE: "Read and Execute",
+};
+
+function packPermissions(users, permission) {
+    return users.map((user) => {
+        return {username: user.username, permission: permission};
+    });
+}
 
 
 export default class CreateProject extends React.Component {
@@ -20,7 +33,8 @@ export default class CreateProject extends React.Component {
             selectedAdministrators: [],
             selectedLeads: [],
             selectedStandardUsers: [],
-            selectedRepository: ""
+            selectedRepository: "",
+            selectedRules: []
         };
 
         this.handleProjectNameChanged = this.handleProjectNameChanged.bind(this);
@@ -59,7 +73,22 @@ export default class CreateProject extends React.Component {
     createProject(e) {
         e.preventDefault();
 
-        ProjectActions.createProject(this.state.projectName);
+        let permissions = packPermissions(this.state.selectedAdministrators, PROJECT_USER_PERMISSIONS.FULL).concat(
+            packPermissions(this.state.selectedLeads, PROJECT_USER_PERMISSIONS.READ_EXECUTE_EDIT)
+        ).concat(
+            packPermissions(this.state.selectedStandardUsers, PROJECT_USER_PERMISSIONS.READ_EXECUTE)
+        );
+
+        axios.post('/projects', {
+            title: this.state.projectName,
+            rules: this.state.selectedRules.map((rule) => rule._id),
+            userPermissions: permissions,
+            repository: this.state.selectedRepository
+        }).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     render() {

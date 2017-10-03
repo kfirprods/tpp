@@ -32,7 +32,13 @@ export default class RepositorySelector extends React.Component {
         }).then((response) => {
             if (response.data.success) {
                 this.setState({repositoryStatus: REPOSITORY_VALIDATION_STATUSES.VALID});
-                this.props.onChange(e.target.value);
+                this.props.onChange({
+                    address: e.target.value,
+                    username: '',
+                    password: '',
+                    sourceBranch: 'default',
+                    targetBranch: 'default'
+                });
             }
             else {
                 this.setState({repositoryStatus: REPOSITORY_VALIDATION_STATUSES.INVALID});

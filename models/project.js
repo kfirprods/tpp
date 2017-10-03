@@ -7,10 +7,10 @@ var userProjectPermissionSchema = mongoose.Schema({
 
 var repositorySchema = mongoose.Schema({
     address: String,
-    username: String,
-    password: String,
-    sourceBranch: String,
-    targetBranch: String
+    username: {type: String, required: false, default: '', validate: /^$|\S+/ },
+    password: {type: String, required: false, default: '', validate: /^$|\S+/ },
+    sourceBranch: {type: String, required: false, default: 'default'},
+    targetBranch: {type: String, required: false, default: 'default'}
 });
 
 var projectSchema = mongoose.Schema({

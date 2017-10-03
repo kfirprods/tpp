@@ -8,13 +8,22 @@ export default class SelectableList extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            selected: []
+        };
+
         this.onChangeWrapper = this.onChangeWrapper.bind(this);
     }
 
     // Wrap onChange to invoke onChange with item objects instead of indexes
     onChangeWrapper(indexes) {
+        this.setState({selected: indexes});
+
         let selectedItems = indexes.map((index) => this.props.items[index]);
-        this.props.onChange(selectedItems);
+
+        if (this.props.onChange) {
+            this.props.onChange(selectedItems);
+        }
     }
 
     render() {
@@ -24,6 +33,7 @@ export default class SelectableList extends React.Component {
         return <List {...this.props}
                      items={ruleComponents}
                      multiple={true}
-                     onChange={this.onChangeWrapper} />;
+                     onChange={this.onChangeWrapper}
+                     selected={this.state.selected} />;
     }
 }

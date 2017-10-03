@@ -32,7 +32,7 @@ var userSchema = mongoose.Schema({
 var User = module.exports = mongoose.model('User', userSchema);
 module.exports.getUserByCredentials = function(username, rawPassword, callback) {
     User.findOne({ username: username }, function(err, user) {
-        if (user == null) {
+        if (user == null || !rawPassword || !user.password) {
             callback(null, null);
             return;
         }

@@ -49,6 +49,7 @@ function isAuthenticatedMiddleware(req,res,next){
         });
 }
 
+router.get('/me', isAuthenticatedMiddleware, userController.getCurrentUser);
 router.get('/users', userController.getAllUsernames);
 
 router.post('/login', expressValidation(validators.login), authController.login);

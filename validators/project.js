@@ -15,8 +15,8 @@ module.exports = {
         })),
         repository: Joi.object({
             address: Joi.string().required(),
-            username: Joi.string().default("guest"),
-            password: Joi.string().default("guest"),
+            username: Joi.string().default(""),
+            password: Joi.string().default(""),
             sourceBranch: Joi.string().default("default"),
             targetBranch: Joi.string().default("tpp")
         }).required()

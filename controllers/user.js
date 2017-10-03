@@ -5,3 +5,7 @@ module.exports.getAllUsernames = function(req, res, next) {
         res.json(usernames);
     });
 };
+
+module.exports.getCurrentUser = function(req, res, next) {
+    res.json({ username: req.user.username });
+};

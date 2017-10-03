@@ -2,10 +2,7 @@ import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
-
-import ProjectStore from '../../stores/ProjectStore';
-import ProjectActions from "../../actions/ProjectActions";
-import LoginStore from '../../stores/LoginStore';
+import axios from 'axios';
 
 
 const PROJECTS_COLUMNS = [
@@ -25,8 +22,10 @@ const PROJECTS_COLUMNS = [
         Header: 'Permissions',
         accessor: 'userPermissions',
         Cell: props => {
+            // TODO: replace with cookies
+            const username = '';
             for (let projectPermission of props.value) {
-                if (projectPermission.username === LoginStore.username) {
+                if (projectPermission.username === username) {
                     return <span>{projectPermission.permission}</span>;
                 }
             }
@@ -47,18 +46,13 @@ export default class MyProjects extends React.Component {
     constructor() {
         super();
         this.state = { projects: [] };
-        this.projectStoreChangeListener = this.projectStoreChangeListener.bind(this);
     }
 
     componentDidMount() {
-        ProjectStore.addChangeListener(this.projectStoreChangeListener);
-
-        ProjectActions.fetchProjects();
-    }
-
-    projectStoreChangeListener() {
-        this.setState({
-            projects: ProjectStore.projects
+        axios.get('/projects').then((response) => {
+            this.setState({ projects: response.data });
+        }).catch((error) => {
+            // TODO: Show an error message
         });
     }
 

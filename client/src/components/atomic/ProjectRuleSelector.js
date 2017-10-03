@@ -28,12 +28,12 @@ export default class ProjectRuleSelector extends React.Component {
 
     render() {
         return (
-            <FilterableSelectableList items={this.state.rules}
+            <FilterableSelectableList onChange={this.props.onChange}
+                                      items={this.state.rules}
                                       renderItem={this.renderRule}
                                       style={{height: '8em'}}
                                       placeholder="Filter Rules"
-                                      filterField="title"
-                                      onChange={this.props.onChange} />
+                                      filterField="title" />
         );
     }
 }
