@@ -219,7 +219,7 @@ module.exports.processFile = function(req, res, next) {
 };
 
 function _processFile(project, filePath, callback) {
-    var python = spawn("python", ["plugins/main.py", filePath]);
+    var python = spawn("python", ["python/main.py", filePath]);
     var allReturnedData = "";
 
     python.stdout.on("data", function (data) {

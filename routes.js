@@ -93,5 +93,6 @@ router.post("/rules", [isAuthenticatedMiddleware, expressValidation(validators.r
 router.delete("/rules/:ruleId", ruleController.deleteRule);
 
 router.get("/utility/repository-exists", utilityController.repositoryExists);
+router.get("/utility/repository-branches", utilityController.listRemoteBranches);
 
 module.exports = router;
