@@ -1,20 +1,20 @@
 // ==================
 // Imports
 // ==================
-var express = require('express');
-var session = require('express-session');
-var expressValidation = require('express-validation');
-var expressFileUpload = require('express-fileupload');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var models = require('./models');
-var cors = require('cors');
+const express = require('express');
+const session = require('express-session');
+const expressValidation = require('express-validation');
+const expressFileUpload = require('express-fileupload');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const models = require('./models');
+const cors = require('cors');
 
 // ==================
 // Express
 // ==================
-var app = express();
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,7 +25,7 @@ app.use(expressFileUpload());
 app.use(require('./routes'));
 
 // Error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     // specific for validation errors
     if (err instanceof expressValidation.ValidationError) {
         return res.status(err.status).json(err);
@@ -36,7 +36,7 @@ app.use(function (err, req, res, next) {
         console.log(err);
         return res.status(500).send(err.stack);
     } else {
-        return res.status(500);
+        return res.sendStatus(500);
     }
 });
 
@@ -50,7 +50,7 @@ app.listen(3001, function () {
 // ==================
 mongoose.connect('mongodb://localhost/tpp');
 
-var db = mongoose.connection;
+let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection Error:'));
 db.once('open', function() {
     console.log("Connected to tpp mongo db");

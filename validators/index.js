@@ -1,7 +1,7 @@
-var loginValidator = require("./login");
-var registerValidator = require("./register");
-var projectValidator = require("./project");
-var ruleValidator = require("./rule");
+const loginValidator = require("./login");
+const registerValidator = require("./register");
+const projectValidator = require("./project");
+const ruleValidator = require("./rule");
 
 
 module.exports.login = loginValidator;

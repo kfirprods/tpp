@@ -28,7 +28,7 @@ export default class CreateProject extends React.Component {
     constructor() {
         super();
         this.state = {
-            projectId: -1,
+            projectId: "",
             projectName: "",
             selectedAdministrators: [],
             selectedLeads: [],
@@ -85,14 +85,17 @@ export default class CreateProject extends React.Component {
             userPermissions: permissions,
             repository: this.state.selectedRepository
         }).then((response) => {
-            console.log(response);
+            this.setState({
+                projectId: response.data._id
+            });
         }).catch((error) => {
+            // TODO: Display error in view
             console.log(error);
         });
     }
 
     render() {
-        if (this.state.projectId >= 0) {
+        if (this.state.projectId) {
             let projectUrl = `/projects/${this.state.projectId}`;
             return (<Redirect to={projectUrl} />);
         }

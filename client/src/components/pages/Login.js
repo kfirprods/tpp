@@ -62,7 +62,7 @@ export default class Login extends React.Component {
             <div className="container">
                 <div className="main-center auth-container">
                     <h1 className="title text-center">Sign In</h1>
-                    <form role="form">
+                    <form>
                         <div className="form-group">
                             <div className="input-group">
                                 <span className="input-group-addon"><i className="fa fa-user fa" aria-hidden="true" /></span>

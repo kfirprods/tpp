@@ -115,6 +115,17 @@ section {
     padding: 20px 40px;
 }
 
+.table {
+    display: table;
+    width: 100%;
+}
+
+.table-cell {
+    display: table-cell;
+    vertical-align: middle;
+    height: 100%;
+}
+
 .flexbox {
     display: flex;
 }
@@ -176,4 +187,33 @@ input {
 .centered {
     text-align: center;
     margin: 0 auto;
+}
+
+.tile {
+    background-color: #FAFAFA;
+    padding: 5px;
+    text-align: center;
+    display: block;
+    height: 100%;
+    border: 1px solid #DFDFDF;
+}
+
+.tile:hover {
+    background-color: #F5F5F5;
+}
+
+
+.tile--selected {
+    background-color: #050505 !important;
+
+    color: #FAFAFA !important;
+}
+
+.rule-title {
+    font-size: 1.8em;
+}
+
+.rule-author {
+    margin-left: 5px;
+    font-size: 0.9em;
 }

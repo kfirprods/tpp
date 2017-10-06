@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 
-var userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
     username: {
         type: String,
         validate: {
@@ -29,7 +29,7 @@ var userSchema = mongoose.Schema({
     projectIds: [mongoose.Schema.Types.ObjectId]
 });
 
-var User = module.exports = mongoose.model('User', userSchema);
+let User = module.exports = mongoose.model('User', userSchema);
 module.exports.getUserByCredentials = function(username, rawPassword, callback) {
     User.findOne({ username: username }, function(err, user) {
         if (user == null || !rawPassword || !user.password) {
@@ -37,7 +37,7 @@ module.exports.getUserByCredentials = function(username, rawPassword, callback) 
             return;
         }
 
-        var isMatch = bcrypt.compareSync(rawPassword, user.password);
+        let isMatch = bcrypt.compareSync(rawPassword, user.password);
         if (isMatch) {
             console.log(username, "logged in!");
             callback(null, user);
@@ -52,7 +52,7 @@ module.exports.getUserByCredentials = function(username, rawPassword, callback) 
 };
 
 module.exports.createUser = function(username, email, rawPassword, callback) {
-    var hashedPassword = bcrypt.hashSync(rawPassword, 8);
+    let hashedPassword = bcrypt.hashSync(rawPassword, 8);
     User.create({ username: username, email: email, password: hashedPassword, projectIds: [] }, callback);
 };
 

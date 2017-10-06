@@ -68,7 +68,7 @@ export default class Register extends React.Component {
             AuthenticationActions.registerUser();
         }).catch(function (error) {
             if (error.response.status === 400) {
-                var validationErrorMessages = [];
+                let validationErrorMessages = [];
                 for (let validationError of error.response.data.errors) {
                     validationErrorMessages.push(validationError.messages.join(", "));
                 }
@@ -81,9 +81,9 @@ export default class Register extends React.Component {
             }
             else if (error.response.status === 403) {
                 // handle forbidden input
-                var errors = error.response.data.errors;
-                var fieldErrors = [];
-                for (var errorFieldName in errors) {
+                let errors = error.response.data.errors;
+                let fieldErrors = [];
+                for (let errorFieldName in errors) {
                     if (errors.hasOwnProperty(errorFieldName)) {
                         fieldErrors.push(errors[errorFieldName].message);
                     }

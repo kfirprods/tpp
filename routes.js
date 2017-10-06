@@ -1,17 +1,17 @@
-var express = require('express');
-var expressValidation = require('express-validation');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
+const express = require('express');
+const expressValidation = require('express-validation');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-var validators = require("./validators");
-var User = require("./models").User;
-var authController = require("./controllers/auth");
-var projectController = require("./controllers/project");
-var ruleController = require("./controllers/rule");
-var userController = require("./controllers/user");
-var utilityController = require("./controllers/utility");
+const validators = require("./validators");
+const User = require("./models").User;
+const authController = require("./controllers/auth");
+const projectController = require("./controllers/project");
+const ruleController = require("./controllers/rule");
+const userController = require("./controllers/user");
+const utilityController = require("./controllers/utility");
 
-var router = express.Router();
+const router = express.Router();
 
 // ==========
 // Passport configuration
@@ -87,6 +87,10 @@ router.post(
 router.get("/rules", ruleController.getAllRules);
 // Get rule by id
 router.get("/rules/:ruleId", ruleController.getRuleById);
+// Get rule categories (collected from all rules)
+router.get("/rule-categories", ruleController.getRuleCategories);
+// Get rule types (from constants)
+router.get("/rule-types", ruleController.getRuleTypes);
 // Create rule
 router.post("/rules", [isAuthenticatedMiddleware, expressValidation(validators.rule)], ruleController.createRule);
 // Delete existing rule

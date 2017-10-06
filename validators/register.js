@@ -1,5 +1,5 @@
-var Joi = require('joi');
-var loginValidator = require('./login');
+const Joi = require('joi');
+const loginValidator = require('./login');
 
 module.exports = {
     body: {

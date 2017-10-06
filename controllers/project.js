@@ -1,14 +1,14 @@
-var { spawn } = require('child_process');
-var fs = require('fs');
-// var Hg = require('hg-plus')();
-var recursiveDir = require('recursive-readdir');
-var moment = require('moment');
+const { spawn } = require('child_process');
+const fs = require('fs');
+// const Hg = require('hg-plus')();
+const recursiveDir = require('recursive-readdir');
+const moment = require('moment');
 
-var Project = require("../models").Project;
-var constants = require("../consts");
+const Project = require("../models").Project;
+const constants = require("../consts");
 
 
-module.exports.getUserProjects = function(req, res, next) {
+module.exports.getUserProjects = function(req, res) {
     Project.getProjectsByUsername(req.user.username, function (err, projects) {
         if (err) {
             console.log("getProjectsByUsername error:", err);
@@ -20,7 +20,7 @@ module.exports.getUserProjects = function(req, res, next) {
     });
 };
 
-module.exports.getProjectById = function(req, res, next) {
+module.exports.getProjectById = function(req, res) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         // If the user has no permission at all
         if (!project.userPermissions.some(permission => permission.username === req.user.username)) {
@@ -32,9 +32,9 @@ module.exports.getProjectById = function(req, res, next) {
     });
 };
 
-module.exports.createProject = function(req, res, next) {
+module.exports.createProject = function(req, res) {
     // Add the creating user to the permission list
-    var permissionsIncludingUser = [...req.body.userPermissions,
+    let permissionsIncludingUser = [...req.body.userPermissions,
         {username: req.user.username, permission: constants.PROJECT_USER_PERMISSIONS.FULL}];
 
     Project.createProject(
@@ -42,20 +42,20 @@ module.exports.createProject = function(req, res, next) {
         req.body.rules,
         permissionsIncludingUser,
         req.body.repository,
-        moment().valueOf(), // unix time
-        function(err) {
+        moment().unix(), // unix time
+        function(err, project) {
             if (err) {
                 console.log("createProject error:", err);
                 res.sendStatus(500);
             }
             else {
-                res.sendStatus(200);
+                res.json(project);
             }
         }
     );
 };
 
-module.exports.updateProject = function(req, res, next) {
+module.exports.updateProject = function(req, res) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         if (!project) {
             console.log("Could not find project by id", req.params.projectId);
@@ -63,7 +63,7 @@ module.exports.updateProject = function(req, res, next) {
             return;
         }
 
-        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
+        let userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
@@ -96,7 +96,7 @@ module.exports.updateProject = function(req, res, next) {
     });
 };
 
-module.exports.deleteProject = function (req, res, next) {
+module.exports.deleteProject = function (req, res) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         if (!project) {
             res.sendStatus(400);
@@ -104,7 +104,7 @@ module.exports.deleteProject = function (req, res, next) {
         }
 
         // One would need full permissions to delete the project
-        var userPermissions = project.userPermissions.filter(
+        let userPermissions = project.userPermissions.filter(
             item => item.username === req.user.username && item.permission === constants.PROJECT_USER_PERMISSIONS.FULL);
 
         if (!userPermissions.length) {
@@ -127,7 +127,7 @@ module.exports.deleteProject = function (req, res, next) {
     });
 };
 
-module.exports.preprocessProject = function(req, res, next) {
+module.exports.preprocessProject = function(req, res) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         if (!project) {
             res.sendStatus(400);
@@ -135,16 +135,16 @@ module.exports.preprocessProject = function(req, res, next) {
         }
 
         // Verify that the user has any permissions
-        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
+        let userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
         }
         else {
             // TODO: Use better path
-            var projectPath = "C:\\tpp_projects_cache\\" + project._id + "\\repo\\";
+            let projectPath = "C:\\tpp_projects_cache\\" + project._id + "\\repo\\";
 
-            var returnFilePaths = function() {
+            let returnFilePaths = function() {
                 recursiveDir(projectPath, [".hgignore", ".hg\\*"], function(err, projectFiles) {
                     res.json(
                         projectFiles.map(
@@ -159,7 +159,7 @@ module.exports.preprocessProject = function(req, res, next) {
             fs.mkdir(projectPath, function(err) {
                 // If the directory did not already exist
                 if (!err || err.code !== 'EEXIST') {
-                    var repositoryPath = projectPath + "\\repo";
+                    let repositoryPath = projectPath + "\\repo";
                     console.log("Cloning a repository to " + repositoryPath);
 
                     // Clone
@@ -174,7 +174,7 @@ module.exports.preprocessProject = function(req, res, next) {
                     ).then(function(repo) {
                         // After cloning, update to most recent default
                         // TODO: Verify that the comment above is reliable!
-                        repo.update({clean: true}, function(err, result) {
+                        repo.update({clean: true}, function() {
                             returnFilePaths();
                         });
                     });
@@ -188,7 +188,7 @@ module.exports.preprocessProject = function(req, res, next) {
     });
 };
 
-module.exports.processFile = function(req, res, next) {
+module.exports.processFile = function(req, res) {
     Project.getProjectById(req.params.projectId, function(err, project) {
         if (!project) {
             res.sendStatus(400);
@@ -196,7 +196,7 @@ module.exports.processFile = function(req, res, next) {
         }
 
         // Verify that the user has any permissions
-        var userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
+        let userPermissions = project.userPermissions.filter(item => item.username === req.user.username);
 
         if (!userPermissions.length) {
             res.sendStatus(401);
@@ -219,15 +219,15 @@ module.exports.processFile = function(req, res, next) {
 };
 
 function _processFile(project, filePath, callback) {
-    var python = spawn("python", ["python/main.py", filePath]);
-    var allReturnedData = "";
+    let python = spawn("python", ["python/main.py", filePath]);
+    let allReturnedData = "";
 
     python.stdout.on("data", function (data) {
         allReturnedData += data.toString();
     });
 
     python.stdout.on("end", function () {
-        var processorResult = JSON.parse(allReturnedData.toString());
+        let processorResult = JSON.parse(allReturnedData.toString());
         console.log("Python finished:", processorResult);
         callback(processorResult.validations);
     });

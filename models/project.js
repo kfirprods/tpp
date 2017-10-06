@@ -1,11 +1,11 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-var userProjectPermissionSchema = mongoose.Schema({
+let userProjectPermissionSchema = mongoose.Schema({
     username: String,
     permission: String
 });
 
-var repositorySchema = mongoose.Schema({
+let repositorySchema = mongoose.Schema({
     address: String,
     username: {type: String, required: false, default: '', validate: /^$|\S+/ },
     password: {type: String, required: false, default: '', validate: /^$|\S+/ },
@@ -13,7 +13,7 @@ var repositorySchema = mongoose.Schema({
     targetBranch: {type: String, required: false, default: 'default'}
 });
 
-var projectSchema = mongoose.Schema({
+let projectSchema = mongoose.Schema({
     title: String,
     rules: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rule' }],
     userPermissions: [userProjectPermissionSchema],
@@ -21,7 +21,7 @@ var projectSchema = mongoose.Schema({
     creationTime: Number
 });
 
-var Project = module.exports = mongoose.model('Project', projectSchema);
+let Project = module.exports = mongoose.model('Project', projectSchema);
 module.exports.createProject = function(title, rules, permissions, repository, creationTime, callback) {
     Project.create({
         title: title,
@@ -40,7 +40,7 @@ module.exports.updateProject = function(projectId, title, rules, permissions, re
         }
 
         if (permissions && permissions.length > 0) {
-            var newFullPermCount = permissions.filter(
+            let newFullPermCount = permissions.filter(
                 perm => perm.permission === constants.PROJECT_USER_PERMISSIONS.FULL
             ).length;
             if (newFullPermCount == 0) {

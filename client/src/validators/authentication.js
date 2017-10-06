@@ -4,7 +4,7 @@ import {default as validate} from 'validator';
 export const usernameValidators = [
     {
         message: 'Username may only consist of letters and digits',
-        validator: value => validate.isAlphanumeric(value) || value.length == 0
+        validator: value => validate.isAlphanumeric(value) || value.length === 0
     },
     {
         message: 'Username must be at least 3 characters long',

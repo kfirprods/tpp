@@ -21,7 +21,7 @@ As for UI, a large vertically centered progress bar reflects the percentage of p
 ###### Pseudo Code
 ```javascript
 post('/projects/1/preprocess', function(response) {
-    var fileNames = response.data;
+    let fileNames = response.data;
     this.setState({
         filesProcessed: 0,
         totalFileCount: fileNames.length

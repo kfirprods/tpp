@@ -1,21 +1,25 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 
-var ruleSchema = mongoose.Schema({
+let ruleSchema = mongoose.Schema({
     title: String,
+    description: String,
     ruleType: String,
     creatorUsername: String,
-    regularExpressions: [String]
+    regularExpressions: [String],
+    categories: [String]
 });
 
-var Rule = module.exports = mongoose.model('Rule', ruleSchema);
+const Rule = module.exports = mongoose.model('Rule', ruleSchema);
 
-module.exports.createRule = function(title, ruleType, creatorUsername, regularExpressions, callback) {
+module.exports.createRule = function(title, description, ruleType, creatorUsername, regularExpressions, categories, callback) {
     Rule.create({
-        title: title,
-        ruleType: ruleType,
-        creatorUsername: creatorUsername,
-        regularExpressions: regularExpressions
+        title,
+        description,
+        ruleType,
+        creatorUsername,
+        regularExpressions,
+        categories
     }, callback);
 };
 
@@ -29,4 +33,29 @@ module.exports.getRuleById = function(ruleId, callback) {
 
 module.exports.deleteRule = function(ruleId, callback) {
     Rule.remove({_id: ruleId}, callback);
+};
+
+module.exports.getCategories = function(query, callback) {
+    let findQuery = {};
+    if (query) {
+        findQuery = { categories: { '$regex': query, '$options': 'i'} };
+    }
+
+    Rule.find(findQuery, function(err, rules) {
+        if (err) {
+            callback(err, []);
+        }
+        else {
+            let categories = [];
+            for (let rule of rules) {
+                for (let category of rule.categories) {
+                    if (categories.indexOf(category) === -1) {
+                        categories.push(category);
+                    }
+                }
+            }
+
+            callback(null, categories);
+        }
+    });
 };

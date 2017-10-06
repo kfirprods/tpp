@@ -1,0 +1,48 @@
+.react-dynamic-fields {
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
+.react-dynamic-fields .input-prepend {
+    position: relative;
+}
+
+.react-dynamic-fields input {
+    font-size: 18px !important;
+    width: 100% !important;
+    border-radius: 0 !important;
+    height: 2.25em;
+    padding: 0 0.75em;
+    border: 1px solid #ddd;
+    border-right: 0;
+}
+
+.react-dynamic-fields .add-on span {
+    display: block;
+    background-color: #ededed;
+    margin: 0 auto;
+    height: 100%;
+    text-align:center;
+}
+
+.react-dynamic-fields .button-add {
+    width: 100%;
+    background: #00A6F0;
+    display: block;
+    padding: 10px 0;
+    border-radius: 0;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+.react-dynamic-fields .button-add:hover {
+    background: #0091EA;
+}
+
+.react-dynamic-fields .delete {
+    text-align:center;
+    border: 1px solid #ddd;
+    border-left: 0;
+    outline: 0;
+}

@@ -1,6 +1,6 @@
-var passport = require('passport');
+const passport = require('passport');
 
-var User = require("../models").User;
+const User = require("../models").User;
 
 
 module.exports.login = function(req, res, next) {
@@ -15,14 +15,14 @@ module.exports.login = function(req, res, next) {
             res.status(401).json(info);
         }
         else {
-            req.logIn(user, function (err) {
+            req.logIn(user, function () {
                 res.sendStatus(200);
             });
         }
     })(req, res, next);
 };
 
-module.exports.register = function(req, res, next) {
+module.exports.register = function(req, res) {
     User.createUser(req.body.username, req.body.email, req.body.password, function(err, user) {
         if (err) {
             res.status(403).json(err);

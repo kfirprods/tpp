@@ -6,11 +6,11 @@ Processing project files directly on the backend is definitely a bad idea.
 Rules are written as independent python scripts and are ran asynchronously by the backend. The backend and the scripts communicate through the standard IO of the script process.
 
 ```javascript
-var spawn = require("child_process").spawn;
-var process = spawn('python', ["script.py"]);
+const spawn = require("child_process").spawn;
+let process = spawn('python', ["script.py"]);
 
 process.stdout.on('data',function(chunk){
-    var result = chunk.toString('utf8');
+    let result = chunk.toString('utf8');
 });
 ```
 
