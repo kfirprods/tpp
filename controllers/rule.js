@@ -3,9 +3,16 @@ const constants = require("../consts");
 
 
 module.exports.getAllRules = function(req, res) {
-    Rule.getAllRules(function(err, rules) {
-        res.json(rules);
-    });
+    if (req.query.q) {
+        Rule.getRuleByTitle(req.query.q, function(err, rule) {
+            res.json(rule);
+        });
+    }
+    else {
+        Rule.getAllRules(function (err, rules) {
+            res.json(rules);
+        });
+    }
 };
 
 module.exports.getRuleById = function(req, res) {
@@ -25,17 +32,26 @@ module.exports.getRuleTypes = function(req, res) {
 };
 
 module.exports.createRule = function(req, res) {
-    Rule.createRule(
-        req.body.title,
-        req.body.description,
-        req.body.ruleType,
-        req.user.username,
-        req.body.regularExpressions,
-        req.body.categories,
-        function() {
-            res.sendStatus(200);
+    Rule.getRuleByTitle(req.body.title, function(err, rule) {
+        // Title taken
+        if (rule !== null) {
+            res.status(400).json({ message: 'The title is in use' });
         }
-    );
+        // Title available
+        else {
+            Rule.createRule(
+                req.body.title,
+                req.body.description,
+                req.body.ruleType,
+                req.user.username,
+                req.body.regularExpressions,
+                req.body.categories,
+                function(err, createdRule) {
+                    res.json(createdRule);
+                }
+            );
+        }
+    });
 };
 
 module.exports.deleteRule = function(req, res) {

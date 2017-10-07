@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 
 let ruleSchema = mongoose.Schema({
-    title: String,
+    title: { type: String, unique: true },
     description: String,
     ruleType: String,
     creatorUsername: String,
@@ -31,6 +31,15 @@ module.exports.getRuleById = function(ruleId, callback) {
     Rule.findOne({_id: ruleId}, callback);
 };
 
+module.exports.getRuleByTitle = function(title, callback) {
+    Rule.findOne({
+        title: {
+            '$regex': '^' + title + '$',
+            '$options': 'i'
+        }
+    }, callback);
+};
+
 module.exports.deleteRule = function(ruleId, callback) {
     Rule.remove({_id: ruleId}, callback);
 };
@@ -47,10 +56,12 @@ module.exports.getCategories = function(query, callback) {
         }
         else {
             let categories = [];
+            let upperCaseCategories = []; // We use a same-case array for case insensitivity
             for (let rule of rules) {
                 for (let category of rule.categories) {
-                    if (categories.indexOf(category) === -1) {
+                    if (upperCaseCategories.indexOf(category.toUpperCase()) === -1) {
                         categories.push(category);
+                        upperCaseCategories.push(category.toUpperCase());
                     }
                 }
             }

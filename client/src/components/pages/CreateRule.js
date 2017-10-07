@@ -1,14 +1,13 @@
 import React from 'react';
-import { ReactTextField } from 'react-textfield';
 import { Redirect } from 'react-router';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 
-import { ruleNameValidators } from '../../validators/rule';
 import { textFieldStyle } from '../../styles/forms';
 import RuleCategoriesSelector from '../atomic/RuleCategoriesSelector';
 import RuleTypeSelector from '../atomic/RuleTypeSelector';
 import RegularExpressionsList from '../atomic/RegularExpressionsList';
+import RuleTitleSelector from '../atomic/RuleTitleSelector';
 
 
 export default class CreateRule extends React.Component {
@@ -18,13 +17,15 @@ export default class CreateRule extends React.Component {
             ruleId: "",
             ruleName: "",
             description: "",
-            ruleCategories: []
+            ruleCategories: [],
+            regularExpressions: []
         };
 
         this.handleRuleNameChanged = this.handleRuleNameChanged.bind(this);
         this.handleRuleCategoriesChanged = this.handleRuleCategoriesChanged.bind(this);
         this.handleDescriptionChanged = this.handleDescriptionChanged.bind(this);
         this.handleRuleTypeChanged = this.handleRuleTypeChanged.bind(this);
+        this.createRule = this.createRule.bind(this);
     }
 
     handleRuleNameChanged(e) {
@@ -43,9 +44,27 @@ export default class CreateRule extends React.Component {
         this.setState({ruleType: type});
     }
 
+    handleRegexChanged(values) {
+        this.setState({regularExpressions: values});
+    }
+
     createRule(e) {
         e.preventDefault();
 
+        axios.post('/rules', {
+            title: this.state.ruleName,
+            description: this.state.description,
+            ruleType: this.state.ruleType.typeName,
+            regularExpressions: this.state.regularExpressions,
+            categories: this.state.ruleCategories.map((category) => category.ruleCategory)
+        }).then((response) => {
+            this.setState({
+                ruleId: response.data._id
+            });
+        }).catch((error) => {
+            // TODO: Display error in view
+            console.log(error);
+        });
     }
 
     render() {
@@ -54,7 +73,7 @@ export default class CreateRule extends React.Component {
             return (<Redirect to={ruleUrl} />);
         }
 
-        let behaviorSelector = <RegularExpressionsList />;
+        let behaviorSelector = <RegularExpressionsList onChange={this.handleRegexChanged} />;
 
         return (
             <div className="container">
@@ -63,12 +82,9 @@ export default class CreateRule extends React.Component {
 
                     <form>
                         <div className="form-group">
-                            <ReactTextField type="text"
-                                            style={textFieldStyle}
-                                            onChange={this.handleRuleNameChanged}
-                                            className="form-control"
-                                            placeholder="Rule Name"
-                                            validators={ruleNameValidators} />
+                            <RuleTitleSelector style={textFieldStyle}
+                                               onChange={this.handleRuleNameChanged}
+                                               placeholder="Rule Name" />
                         </div>
 
                         <div className="form-group">
@@ -116,7 +132,7 @@ export default class CreateRule extends React.Component {
 
                         <Button className="btn btn-primary btn-lg btn-block login-button"
                                 type="submit"
-                                onClick={this.createProject}>Create</Button>
+                                onClick={this.createRule}>Create</Button>
                     </form>
                 </div>
             </div>

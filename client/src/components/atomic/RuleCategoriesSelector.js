@@ -19,8 +19,8 @@ export default class RuleCategoriesSelector extends React.Component {
 
         return fetch(`/rule-categories?q=${input}`).then((response) =>
             response.json()).then((response) => {
-            let options = response.map((ruleName) => {
-                return { ruleName };
+            let options = response.map((ruleCategory) => {
+                return { ruleCategory };
             });
 
             return { options: options };
@@ -34,8 +34,7 @@ export default class RuleCategoriesSelector extends React.Component {
                             placeholder="example: C#, C++"
                             value={this.props.value}
                             onChange={this.props.onChange}
-                            labelKey="ruleName"
-                            valueKey="ruleName" />
+                            labelKey="ruleCategory" />
         );
     }
 }

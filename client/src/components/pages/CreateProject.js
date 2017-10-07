@@ -146,8 +146,7 @@ export default class CreateProject extends React.Component {
                         </div>
 
                         <div className="form-group">
-                            <RepositorySelector value={this.state.selectedRepository}
-                                                onChange={this.selectedRepositoryChanged} />
+                            <RepositorySelector onChange={this.selectedRepositoryChanged} />
                         </div>
 
                         <div className="form-group">

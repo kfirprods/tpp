@@ -1,5 +1,5 @@
 import React from 'react';
-import { Debounce } from 'react-throttle';
+import debounce from 'javascript-debounce';
 
 import SelectableList from './SelectableList';
 
@@ -13,12 +13,16 @@ export default class FilterableSelectableList extends React.Component {
         };
 
         this.filterTextChanged = this.filterTextChanged.bind(this);
+        this.updateFilter = this.updateFilter.bind(this);
+        this.updateFilter = debounce(this.updateFilter, 250);
     }
 
     filterTextChanged(e) {
-        this.setState({
-            filterText: e.target.value
-        });
+        this.updateFilter(e.target.value);
+    }
+
+    updateFilter(value) {
+        this.setState({filterText: value});
     }
 
     render() {
@@ -29,12 +33,10 @@ export default class FilterableSelectableList extends React.Component {
 
         return (
             <div>
-                <Debounce time="350" handler="onChange">
-                    <input className="react-list-select-filter-box ReactTextField--input"
-                           type='text'
-                           placeholder={this.props.placeholder}
-                           onChange={this.filterTextChanged} />
-                </Debounce>
+                <input className="react-list-select-filter-box ReactTextField--input"
+                       type='text'
+                       placeholder={this.props.placeholder}
+                       onChange={this.filterTextChanged} />
 
                 <SelectableList {...this.props}
                                 items={items} />
